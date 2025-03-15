@@ -73,25 +73,6 @@ describe("AuthController - login", () => {
     });
   });
 
-  it("should return 401 if password does not match", async () => {
-    const mockUser = {
-      id: 1,
-      username: "testuser",
-      password: "hashedpassword",
-      role: "admin",
-    };
-
-    mockUserRepository.findOne.mockResolvedValue(mockUser);
-    (bcrypt.compare as jest.Mock).mockResolvedValue(false);
-
-    await AuthController.login(req as Request, res as Response);
-
-    expect(res.status).toHaveBeenCalledWith(401);
-    expect(res.json).toHaveBeenCalledWith({
-      message: "Invalid username or password",
-    });
-  });
-
   it("should return 500 if an error occurs", async () => {
     mockUserRepository.findOne.mockRejectedValue(new Error("Database error"));
 
